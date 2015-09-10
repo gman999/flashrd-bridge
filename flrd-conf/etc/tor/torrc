@@ -1,0 +1,16 @@
+SocksPort 0
+Log notice file /var/log/tor.log
+RunAsDaemon 1
+DataDirectory /var/tor
+ORPort 9002
+Nickname FlashBridge
+RelayBandwidthRate 100 KB
+RelayBandwidthBurst 200 KB
+ContactInfo user@host.com
+User _tor
+ExitPolicy reject *:*
+PublishServerDescriptor 1
+BridgeRecordUsageByCountry 1
+EntryStatistics 1
+AvoidDiskWrites 1
+HeartbeatPeriod 1hours
