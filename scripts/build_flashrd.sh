@@ -1,8 +1,6 @@
 #!/bin/sh -x
-# tor for _tor group and torsocks for git
-# DEPS torsocks,git
-
-#set -e
+# $arch and $ver has to match the build box right now
+# for building a basic image
 
 now="${now:-`date "+%Y%m%d"`}"
 ver="${ver:-`uname -r`}"
@@ -15,23 +13,20 @@ source="${source:-$HOME/openbsd}"
 mirror="${mirror:-ftp://mirrors.nycbug.org/pub/OpenBSD/$ver/$arch}"
 anoncvs="${anoncvs:-anoncvs@openbsd.nycbug.org:/cvs}"
 sets="${sets:-{bsd,bsd.rd,SHA256.sig,base$sysver.tgz}}"
-#pkgs="${pkgs:-{tor-*.tgz,torsocks-*.tgz}"
 tz="${tz:-UTC}"
 # be br cf de dk es fr hu is it jp la lt lv nl no pl pt ru sf sg si sv tr ua uk us
 locale="${locale:-us}"
 dns="${dns:-198.6.1.6}"
 hostname="${hostname:-flashrd-$now-$sysver}"
-#conf="${conf:-$HOME/flrd-conf}"
-#passwd="${passwd:-passwd}"
+
+# stop me if it's gets ugly
 
 die(){
 	echo >&2 "ERROR:" "$@"
 	exit 1
 	}
 
-#/etc/rc.d/tor restart;
-
-# cleanup
+# cleanup the previous mess from today
 
 /sbin/vnconfig -u /dev/vnd{0-4}
 
@@ -40,6 +35,8 @@ cd $HOME;
 rm $flashrdpath/flashimg.i386-$now;
 
 rm -rf $source/*;
+
+# grab and extract the source
 
 cd $source;
 
