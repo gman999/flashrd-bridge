@@ -17,24 +17,22 @@ tz="${tz:-UTC}"
 # be br cf de dk es fr hu is it jp la lt lv nl no pl pt ru sf sg si sv tr ua uk us
 locale="${locale:-us}"
 dns="${dns:-198.6.1.6}"
-hostname="${hostname:-flashrd-$now-$sysver}"
+hostname="${hostname:-flashrd-$sysver}"
+sysname="${sysname:-flashrd-$now-$sysver}"
 
 # stop me if it's gets ugly
 
-die(){
-	echo >&2 "ERROR:" "$@"
-	exit 1
-	}
+yell() { echo "$0: $*" >&2; }
+die() { yell "$*"; exit 111; }
+try() { "$@" || die "cannot $*"; }
 
 # cleanup the previous mess from today
 
 /sbin/vnconfig -u /dev/vnd{0-4}
 
-cd $HOME;
-
 rm $flashrdpath/flashimg.i386-$now;
 
-rm -rf $source/*;
+rm -rf $source && mkdir $source;
 
 # grab and extract the source
 
@@ -93,6 +91,6 @@ cd $flashrdpath && /bin/sh flashrd $source;
 
 # root passwd prompt
 
-echo "Now write with 'cd $flashrdpath && ./growimg -t diskN $flashrdpath/flashimg.$arch-$now'"
+echo "Now write with 'cd $flashrdpath && ./growimg -t diskN $flashrdpath/$sysname'"
 
 true
