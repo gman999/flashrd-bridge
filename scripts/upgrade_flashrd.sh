@@ -1,14 +1,20 @@
 #!/bin/sh -x
-# to run on flashrd host
+# to reside on flashrd host and run after new files in $new
 
+# not really necessary since standard
 flash="${flash:-/flash}"
 old="${old:-$flash/old}"
 new="${new:-$flash/new}"
 
-cp $flash/{bsd,openbsd.vnd,var.tar} $old;
+# if it's not working out, let's just end it
+yell() { echo "$0: $*" >&2; }
+die() { yell "$*"; exit 111; }
+try() { "$@" || die "cannot $*"; }
 
-mv $new/{bsd,openbsd.vnd,var.tar} $flash;
+try cp $flash/{bsd,openbsd.vnd,var.tar} $old;
 
-reboot;
+try mv $new/{bsd,openbsd.vnd,var.tar} $flash;
 
 echo "Rebooting with new contents of /flash, but we'll regress to /flash/old if it won't boot";
+
+try reboot;
