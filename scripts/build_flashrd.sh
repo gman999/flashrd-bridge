@@ -1,5 +1,5 @@
 #!/bin/sh -x
-# $arch and $ver has to match the build box right now
+# $arch and $ver has to match the build box currently
 # for building a basic image
 
 now="${now:-`date "+%Y%m%d"`}"
@@ -40,7 +40,7 @@ cd $source;
 
 ftp -ai $mirror/$sets;
 
-/usr/bin/signify -C -p /etc/signify/openbsd-$sysver-base.pub -x $sets;
+/usr/bin/signify -C -p /etc/signify/openbsd-$sysver-base.pub -x SHA256.sig $sets;
 
 tar zxpf base$sysver.tgz;
 
